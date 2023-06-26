@@ -1,7 +1,7 @@
 package ru.netology.javaqadiplom;
 
 import org.junit.jupiter.api.Assertions;
-import org.junitpackage ru.netology.javaqadiplom;
+//import org.junitpackage ru.netology.javaqadiplom;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
