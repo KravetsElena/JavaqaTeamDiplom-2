@@ -102,9 +102,13 @@ public class SavingAccountTest {
             assertEquals(1000, account.getBalance());
         }
 
-        @Test
+      @Test
         void testYearChange() {
-            assertEquals(100, account.yearChange());
-            assertEquals(1100, account.getBalance());
-        }
+        SavingAccount account = new SavingAccount(200, 0, Integer.MAX_VALUE, 15);
+        int expectedInterest = 30;  // Ожидаемая сумма процентов
+
+        int actualInterest = account.yearChange();
+
+        assertEquals(expectedInterest, actualInterest);
+    }
 }
