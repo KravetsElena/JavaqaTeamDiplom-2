@@ -32,7 +32,9 @@ public class CreditAccount extends Account {
         this.creditLimit = creditLimit;
         this.rate = rate;
     }
-
+    public void setBalance(int newBalance) {
+        this.balance = newBalance;
+    }
     /**
      * Операция оплаты с карты на указанную сумму.
      * В результате успешного вызова этого метода, баланс должен уменьшиться
