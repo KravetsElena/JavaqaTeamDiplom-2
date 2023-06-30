@@ -196,13 +196,14 @@ public class CreditAccountTest {
     }
 
     @Test
-    public void shouldYearChangeIfBalanceNegative() {  ///////% при отриц страт балансе
+    public void shouldYearChangeIfBalanceNegative() {  ///////% при отриц  балансе
 
         CreditAccount account = new CreditAccount(
-                -200,
+                200,
                 5_000,
                 15
         );
+        account.pay(400);
         Assertions.assertEquals(-30, account.yearChange());
     }
 

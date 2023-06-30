@@ -27,7 +27,7 @@ public class CreditAccount extends Account {
         }
         if (initialBalance < 0) {
             throw new IllegalArgumentException("Начальный балланс не может быть отрицательным");
-            }
+        }
         this.balance = initialBalance;
         this.creditLimit = creditLimit;
         this.rate = rate;
@@ -93,6 +93,7 @@ public class CreditAccount extends Account {
         }
         return 0;
     }
+
 
     public int getCreditLimit() {
         return creditLimit;
