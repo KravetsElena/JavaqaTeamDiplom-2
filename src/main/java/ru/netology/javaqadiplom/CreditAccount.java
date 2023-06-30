@@ -5,6 +5,7 @@ package ru.netology.javaqadiplom;
  * Может иметь баланс вплоть до отрицательного, но до указанного кредитного лимита.
  * Имеет ставку - количество процентов годовых на сумму на балансе, если она меньше нуля.
  */
+
 public class CreditAccount extends Account {
     protected int creditLimit;
 
@@ -12,27 +13,35 @@ public class CreditAccount extends Account {
      * Создаёт новый объект кредитного счёта с заданными параметрами.
      * Если параметры некорректны (кредитный лимит отрицательный и так далее), то
      * должно выкидываться исключения вида IllegalArgumentException.
+     *
      * @param initialBalance - неотрицательное число, начальный баланс для счёта
-     * @param creditLimit - неотрицательное число, максимальная сумма которую можно задолжать банку
-     * @param rate - неотрицательное число, ставка кредитования для расчёта долга за отрицательный баланс
+     * @param creditLimit    - неотрицательное число, максимальная сумма которую можно задолжать банку
+     * @param rate           - неотрицательное число, ставка кредитования для расчёта долга за отрицательный баланс
      */
     public CreditAccount(int initialBalance, int creditLimit, int rate) {
-        if (rate <= 0) {
-            throw new IllegalArgumentException(
-                    "Накопительная ставка не может быть отрицательной, а у вас: " + rate
-            );
+        if (creditLimit < 0) {
+            throw new IllegalArgumentException("Кредитный лимит не может быть отрицательным");
+        }
+        if (rate < 0) {
+            throw new IllegalArgumentException("Ставка не может быть отрицательной");
+        }
+        if (initialBalance < 0) {
+            throw new IllegalArgumentException("Начальный балланс не может быть отрицательным");
         }
         this.balance = initialBalance;
         this.creditLimit = creditLimit;
         this.rate = rate;
     }
-
+    public void setBalance(int newBalance) {
+        this.balance = newBalance;
+    }
     /**
      * Операция оплаты с карты на указанную сумму.
      * В результате успешного вызова этого метода, баланс должен уменьшиться
      * на сумму покупки. Если же операция может привести к некорректному
      * состоянию счёта (например, баланс может уйти меньше чем лимит), то операция должна
      * завершиться вернув false и ничего не поменяв на счёте.
+     *
      * @param amount - сумма покупки
      * @return true если операция прошла успешно, false иначе.
      */
@@ -41,14 +50,15 @@ public class CreditAccount extends Account {
         if (amount <= 0) {
             return false;
         }
-        balance = balance - amount;
-        if (balance > -creditLimit) {
-            balance = -amount;
+        int newBalance = balance - amount;
+        if (newBalance >= -creditLimit) {
+            balance = newBalance;
             return true;
         } else {
             return false;
         }
     }
+
 
     /**
      * Операция пополнения карты на указанную сумму.
@@ -56,17 +66,16 @@ public class CreditAccount extends Account {
      * на сумму покупки. Если же операция может привести к некорректному
      * состоянию счёта, то операция должна
      * завершиться вернув false и ничего не поменяв на счёте.
+     *
      * @param amount - сумма пополнения
      * @return true если операция прошла успешно, false иначе.
-     * @param amount
-     * @return
      */
     @Override
     public boolean add(int amount) {
         if (amount <= 0) {
             return false;
         }
-        balance = amount;
+        balance += amount;
         return true;
     }
 
@@ -76,12 +85,17 @@ public class CreditAccount extends Account {
      * числу через отбрасывание дробной части (так и работает целочисленное деление).
      * Пример: если на счёте -200 рублей, то при ставке 15% ответ должен быть -30.
      * Пример 2: если на счёте 200 рублей, то при любой ставке ответ должен быть 0.
+     *
      * @return
      */
     @Override
     public int yearChange() {
-        return balance / 100 * rate;
+        if (balance < 0) {
+            return -Math.abs(balance) * rate / 100;
+        }
+        return 0;
     }
+
 
     public int getCreditLimit() {
         return creditLimit;
